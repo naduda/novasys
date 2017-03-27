@@ -1,5 +1,16 @@
 # Novasys
 
+# Install
+## 1. Install nodejs
+## 2. Install angular-cli
+## 3. Create project (ng new novasys)
+## 4. Install Dependencies (npm install primeng font-awesome bootstrap@4.0.0-alpha.6 @ng-bootstrap/ng-bootstrap --save)
+## 5. Edit .angular-cli.json. Add to styles:
+### "../node_modules/font-awesome/css/font-awesome.min.css"
+### "../node_modules/primeng/resources/themes/omega/theme.css"
+### "../node_modules/primeng/resources/primeng.min.css"
+### "../node_modules/bootstrap/dist/css/bootstrap.min.css" 
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-rc.2.
 
 ## Development server
