@@ -1,0 +1,20 @@
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <ul></ul>
+  </div>
+</div>
+<ngb-tabset #ngbTabset="ngbTabset" *ngIf="langService.values"
+  (tabChange)="beforeChange($event)">
+  <div *ngFor="let tab of menuService.menuOrder">
+    <ngb-tab *ngIf="tab.isVisible" id="{{tab.name}}">
+      <template ngbTabTitle>
+        <i class="{{tab.ico}}"></i>
+        <span *ngIf="tab.name !== 'barsButton'" class="tabTitle">{{langService.values[tab.name]}}</span>
+        <i *ngIf="tab.name !== 'barsButton'" class="fa fa-close text-danger" (click)="onTabClose(tab, $event);"></i>
+      </template>
+      <template ngbTabContent>
+        <app-content tabName="{{tab.name}}"></app-content>
+      </template>
+    </ngb-tab>
+  </div>
+</ngb-tabset>

@@ -1,0 +1,25 @@
+div.dropdown-item:hover,
+span[ngbDropdownToggle]:hover {
+  cursor: pointer;
+}
+
+.dropdown-divider {
+  margin: 0.25rem auto;
+}
+
+div.dropdown-menu {
+  min-width: 0;
+}
+
+div.dropdown-item {
+  font-size: 0.8rem;
+}
+
+.icoDiv {
+  display: inline-block;
+  min-width: 0.25rem;
+}
+
+i.fa {
+  margin-left: -1rem;
+}

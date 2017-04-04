@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body,
+div.container-fluid {
+  height: 100%;
+  width: 100%;
+}
+
+.ui-widget-content {
+  background-color: transparent!important;
+}
+
+ngb-tabset > ul > li > a[id="barsButton"]:first-child {
+  position: fixed;
+  right: 0;
+}
+
+ngb-tabset li.nav-item {
+  display: table!important;
+}
+
+ngb-tabset li.nav-item a {
+  padding: 0.5rem;
+}

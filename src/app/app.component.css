@@ -1,0 +1,39 @@
+div.fixed-top {
+  color: #DDD;
+}
+
+i.fa-bars {
+  color: #CCC;
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+  margin-left: -0.5rem;
+  position: relative;
+  top: 0.15rem;
+}
+
+i.fa-bars:hover {
+  cursor: pointer;
+}
+
+.collapse.show {
+  display: block!important;
+}
+
+.mainContent {
+  height: calc(100% - 4.75rem);
+  position: fixed;
+  top: 2.75rem;
+  width: 100%;
+}
+
+.contentTab {
+  width: 100%;
+}
+
+.footer {
+  bottom: 0;
+  color: #EEE;
+  height: 1.95rem;
+  position: fixed;
+  width: 100%;
+}
