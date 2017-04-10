@@ -1,0 +1,15 @@
+{
+  "name": "menuData",
+  "ico": "fa fa-bars",
+  "children":[
+    {"name": "menuDataViewData", "ico": "fa fa-link"},
+    {"name": "menuDataElecticityParameters", "ico": "fa fa-close"},
+    {"name": "menuDataEventsDevisesArchive", "ico": "fa fa-close"},
+    {"name": "separator"},
+    {"name": "menuDataViewGroups", "ico": "fa fa-close"},
+    {"name": "separator"},
+    {"name": "menuDataPowerLimits", "ico": "fa fa-close"},
+    {"name": "separator"},
+    {"name": "menuReferencesMnemonicSchemes", "ico": "fa fa-close"}
+  ]
+}
