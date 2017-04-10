@@ -1,11 +1,25 @@
 <div class="container-fluid">
   <div class="row fixed-top bg-inverse">
-    <div class="col-lg-1 col-sm-2 bg-warning">logo</div>
-    <div class="col-lg-3 push-lg-8 col-sm-10 text-right bg-info">
-      <span>languages</span>
+    <div class="nav col-lg-1 col-sm-2 col-4">
+      <div class="nav-link">logo</div>
     </div>
-    <div class="col-lg-8 pull-lg-3 col-sm-12 hidden-md-down bg-success">
-      menu
+    <div class="col-lg-3 push-lg-8 col-sm-10 col-8 text-right">
+      <lang></lang>
+      <span class="hidden-lg-up" (click)="isCollapsed = !isCollapsed;">
+        <i class="fa fa-bars"></i>
+      </span>
     </div>
+    <div class="col-lg-8 pull-lg-3 col-12" 
+      [ngClass]="{'hidden-md-down':isCollapsed}">
+      <app-menu></app-menu>
+    </div>
+  </div>
+  
+  <div class="row mainContent">
+    <app-tab class="contentTab"></app-tab>
+  </div>
+
+  <div class="row footer bg-inverse">
+    footer
   </div>
 </div>
