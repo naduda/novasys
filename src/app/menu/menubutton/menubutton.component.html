@@ -1,5 +1,7 @@
 <div class="nav-link" ngbDropdown *ngIf="langService.values">
-  <i class="{{settings.ico}}"></i>
+  <div class="icoDiv hidden-md-down" *ngIf="settings.ico">
+    <i class="{{settings.ico}}"></i>
+  </div>
   <span ngbDropdownToggle>{{langService.values[settings.name]}}</span>
   <div class="dropdown-menu">
     <div *ngFor="let s of settings.children"

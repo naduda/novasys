@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { LangService } from '../lang/lang.service';
 import { MenuService } from '../menu.service';
@@ -12,19 +12,16 @@ import { environment } from '../../../environments/environment';
 export class MenuButtonComponent {
   private headers = new Headers({'Content-Type': 'application/json'});
   private destUrl = './assets/jsonSettings/';
-  private element: any;
+  @Input() private fileName: any;
   private settings: any;
 
-  constructor(private elementRef: ElementRef,
-              private http: Http,
+  constructor(private http: Http,
               private langService: LangService,
               private menuService: MenuService) {
-    this.element = elementRef.nativeElement;
   }
 
   ngOnInit() {
-    let attr = this.element.getAttribute('settings');
-    this.http.get(this.destUrl + attr + '.json')
+    this.http.get(this.destUrl + this.fileName + '.json')
     .toPromise()
     .then(res => {
       this.settings = res.json();
@@ -35,10 +32,12 @@ export class MenuButtonComponent {
           this.menuService.menu.push(e);
         });
     })
-    .catch(ex => console.error(attr + '\n' + ex));
+    .catch(ex => console.error(this.fileName + '\n' + ex));
   }
 
   onMenuItemClick(item) {
+    let barsButton:any = document.querySelector('span[class="hidden-lg-up"]');
+    barsButton && barsButton.click();
     if(item.name === 'menuFileExit') {
       for(let i = 3; i < 10; i++) {
         let it = this.menuService.menu[i];

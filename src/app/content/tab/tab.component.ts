@@ -19,6 +19,10 @@ export class TabComponent implements OnInit {
           modal.style.display = "none";
       }
     }
+    window.onresize = () => {
+      let link: any = document.querySelector('a.nav-link.active');
+      link && link.click();
+    }
   }
 
   ngOnInit() {
@@ -45,17 +49,20 @@ export class TabComponent implements OnInit {
       liWidth += bbWidth.offsetHeight - bbWidth.offsetWidth;
 
     if(ulWidth < liWidth) {
-      let ind = 1;
-      while(!this.menuService.menuOrder[ind].isVisible) ind++;
-      this.menuService.menuOrder[ind].isVisible = false;
+      let visItems = this.menuService.menuOrder
+        .filter(e => e.name !== 'barsButton')
+        .filter(e => e.isVisible);
+      if(visItems && visItems.length > 0) visItems[0].isVisible = false;
+      
     }
 
     if(this.oldWidth == ulWidth - liWidth) return;
     this.oldWidth = ulWidth - liWidth;
     if(this.oldWidth > 0) {
       let ind = this.menuService.menuOrder.length - 1;
-      while(ind > 0 && this.menuService.menuOrder[ind].isVisible)
+      while(ind > 0 && this.menuService.menuOrder[ind].isVisible) {
         ind--;
+      }
       if(ind == this.menuService.menuOrder.length) return;
       if(this.menuService.menuOrder[ind].width < this.oldWidth)
         this.menuService.menuOrder[ind].isVisible = true;
@@ -72,7 +79,7 @@ export class TabComponent implements OnInit {
     e.preventDefault();
   }
 
-  public beforeChange($event: NgbTabChangeEvent) {
+  beforeChange($event: NgbTabChangeEvent) {
     if ($event.nextId === 'barsButton') {
       let btn = document.getElementById('myModal');
       let ul = btn.children[0].children[0];

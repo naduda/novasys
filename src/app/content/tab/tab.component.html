@@ -13,7 +13,7 @@
         <i *ngIf="tab.name !== 'barsButton'" class="fa fa-close text-danger" (click)="onTabClose(tab, $event);"></i>
       </template>
       <template ngbTabContent>
-        <app-content tabName="{{tab.name}}"></app-content>
+        <app-content [tabName]="tab.name"></app-content>
       </template>
     </ngb-tab>
   </div>
