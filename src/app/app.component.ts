@@ -1,6 +1,4 @@
-import {Component} from '@angular/core';
-import {LangService} from './menu/lang/lang.service';
-import {KeyValue} from './menu/lang/KeyValue';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,11 +6,9 @@ import {KeyValue} from './menu/lang/KeyValue';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  private values:any;
-  private isCollapsed: boolean;
+  public isCollapsed: boolean;
 
-  constructor(private langService: LangService){
-    this.values = langService.values;
+  constructor() {
     this.isCollapsed = true;
   }
 }

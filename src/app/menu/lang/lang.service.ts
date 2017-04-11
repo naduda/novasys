@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/toPromise';
-import { KeyValue } from './KeyValue'
 
 @Injectable()
 export class LangService {
@@ -21,14 +20,14 @@ export class LangService {
       return this.http.get(this.destUrl + 'locales.json').toPromise()
       .then(response => {
         this.locales = response.json() as any[];
-        return this.locales
+        return this.locales;
       })
       .catch(this.handleError);
     }
   }
 
   getMap(locale: string): Promise<any> {
-    if (locale == undefined) {
+    if (locale === undefined) {
       return Promise.resolve(null);
     } else {
       return this.http.get(this.destUrl + locale + '_lang.json')

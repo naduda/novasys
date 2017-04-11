@@ -9,7 +9,7 @@ export class MenuService {
   constructor() {
     this.menu = [];
     this.menuOrder = [];
-    let barsButton = {
+    const barsButton = {
       ico: 'fa fa-caret-down',
       name: 'barsButton'
     };
@@ -17,22 +17,26 @@ export class MenuService {
     this.menuOrder.push(barsButton);
   }
 
-  removeItemFromMenuOrder(item:any) {
+  removeItemFromMenuOrder(item: any) {
     this.menuOrder.forEach((e, ind) => {
-      if(e.name === item.name) {
+      if (e.name === item.name) {
         this.menuOrder.splice(ind, 1);
         return;
       }
     });
   }
 
-  barsButton(item:any) {
-    let isOpen = this.menuOrder
+  barsButton(item: any) {
+    const isOpen = this.menuOrder
         .filter(e => e.name === item.name).length > 0;
-    if(isOpen) return;
+    if (isOpen) {
+      return;
+    }
 
-    let tabSet = this.tabComponent.ngbTabset;
-    item && (tabSet.activeId = item.name);
+    const tabSet = this.tabComponent.ngbTabset;
+    if (item) {
+      tabSet.activeId = item.name;
+    }
     item.width = 0;
     item.isVisible = true;
     this.menuOrder.push(item);

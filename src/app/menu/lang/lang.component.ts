@@ -1,15 +1,14 @@
-import {Component, ElementRef} from '@angular/core';
-import {LangService} from './lang.service';
-import {KeyValue} from './KeyValue'
+import { Component, OnInit } from '@angular/core';
+import { LangService } from './lang.service';
 
 @Component({
-  selector: 'lang',
+  selector: 'app-lang',
   templateUrl: './lang.component.html',
-  styleUrls:['./lang.component.css']
+  styleUrls: ['./lang.component.css']
 })
-export class LangComponent {
+export class LangComponent implements OnInit {
   private locales: any[];
-  private locale: any;
+  public locale: any;
 
   constructor(private langService: LangService) {
     this.locale = {};
@@ -19,8 +18,8 @@ export class LangComponent {
     this.langService.getLocales()
     .then((data: any[]) => {
       this.locales = data;
-      let novasys: any = localStorage.getItem('novasys');
-      let loc = novasys ? JSON.parse(novasys).locale : data[0];
+      const novasys: any = localStorage.getItem('novasys');
+      const loc = novasys ? JSON.parse(novasys).locale : data[0];
       this.locale = loc;
     })
     .then(() => {
@@ -28,7 +27,7 @@ export class LangComponent {
     });
   }
 
-  changeLang(item:any) {
+  changeLang(item: any) {
     this.locale = item;
     let novasys: any = localStorage.getItem('novasys');
     novasys = novasys ? JSON.parse(novasys) : new Object();
