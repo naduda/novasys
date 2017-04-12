@@ -32,11 +32,11 @@ export class TabComponent implements OnInit, DoCheck {
     this.menuService.tabComponent = this;
   }
 
-  ngDoCheck() {
+  private isTabFull(): boolean {
     const ul: any = document.querySelector('ngb-tabset > ul');
     const lis = document.querySelectorAll('ngb-tabset > ul > li > a');
     if (!lis || lis.length === 0) {
-      return;
+      return false;
     }
     const ulWidth = ul.offsetWidth;
     let liWidth = Array.prototype.reduce
@@ -55,36 +55,50 @@ export class TabComponent implements OnInit, DoCheck {
       liWidth += bbWidth.offsetHeight - bbWidth.offsetWidth;
     }
 
-    if (ulWidth < liWidth) {
-      const visItems = this.menuService.menuOrder
-        .filter(e => e.name !== 'barsButton')
-        .filter(e => e.isVisible);
-      if (visItems && visItems.length > 0) {
-        visItems[0].isVisible = false;
-      }
-    }
-
     if (this.oldWidth === ulWidth - liWidth) {
-      return;
+      return false;
     }
     this.oldWidth = ulWidth - liWidth;
+
+    return ulWidth < liWidth;
+  }
+
+  private addItemIfPossible() {
     if (this.oldWidth > 0) {
       let ind = this.menuService.menuOrder.length - 1;
       while (ind > 0 && this.menuService.menuOrder[ind].isVisible) {
         ind--;
       }
-      if (ind === this.menuService.menuOrder.length) {
-        return;
-      }
       if (this.menuService.menuOrder[ind].width < this.oldWidth) {
         this.menuService.menuOrder[ind].isVisible = true;
       }
     }
+  }
+
+  ngDoCheck() {
+    if (this.isTabFull()) {
+      while (this.oldWidth < 0) {
+        const firstItem = this.menuService.menuOrder
+          .find(e => e.name !== 'barsButton' && e.isVisible);
+        if (!firstItem) {
+          return;
+        }
+        firstItem.isVisible = false;
+        this.oldWidth -= firstItem.width;
+      }
+    }
+
+    this.addItemIfPossible();
+
     const hideTabs = this.menuService.menuOrder
         .filter(e => e.name !== 'barsButton' && !e.isVisible);
-    this.menuService.menuOrder
-        .filter(it => it.name === 'barsButton')
-        [0].isVisible = hideTabs.length > 0;
+    this.menuService.menuOrder[0].isVisible = hideTabs.length > 0;
+
+    if (this.ngbTabset && this.ngbTabset.activeId) {
+      if (this.ngbTabset.activeId === 'barsButton') {
+        this.ngbTabset.activeId = this.menuService.lastOrderedItem().name;
+      }
+    }
   }
 
   onTabClose(menuItem: any, e: MouseEvent) {

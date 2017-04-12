@@ -36,6 +36,10 @@ export class MenuButtonComponent implements OnInit {
   }
 
   onMenuItemClick(item) {
+    if (item.name === 'separator') {
+      return;
+    }
+
     const barsButton: any = document.querySelector('span[class="hidden-lg-up"]');
     if (barsButton) {
       barsButton.click();
