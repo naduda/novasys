@@ -1,4 +1,5 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { LangService } from '../menu/lang/lang.service';
 
 @Component({
   selector: 'app-content',
@@ -6,7 +7,7 @@ import { Component, ElementRef, Input } from '@angular/core';
   styleUrls: ['./content.component.css']
 })
 export class ContentComponent {
-  @Input() tabName: any;
+  @Input() tabName: string;
 
-  constructor(private elementRef: ElementRef) { }
+  constructor(public langService: LangService) {}
 }

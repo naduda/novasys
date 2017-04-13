@@ -3,7 +3,7 @@
     <ul></ul>
   </div>
 </div>
-<ngb-tabset #ngbTabset="ngbTabset" *ngIf="langService.values"
+<ngb-tabset #tabset *ngIf="langService.values"
   (tabChange)="beforeChange($event)">
   <div *ngFor="let tab of menuService.menuOrder">
     <ngb-tab *ngIf="tab.isVisible" id="{{tab.name}}">

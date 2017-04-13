@@ -9,7 +9,7 @@ import { MenuService } from '../../menu/menu.service';
   styleUrls: ['./tab.component.css']
 })
 export class TabComponent implements OnInit, DoCheck {
-  @ViewChild('ngbTabset') ngbTabset: NgbTabset;
+  @ViewChild('tabset') ngbTabset: NgbTabset;
   private oldWidth;
 
   constructor(private menuService: MenuService,
@@ -64,13 +64,20 @@ export class TabComponent implements OnInit, DoCheck {
   }
 
   private addItemIfPossible() {
-    if (this.oldWidth > 0) {
+    let oldIndex = -1;
+    while (this.oldWidth > 0) {
       let ind = this.menuService.menuOrder.length - 1;
       while (ind > 0 && this.menuService.menuOrder[ind].isVisible) {
         ind--;
       }
-      if (this.menuService.menuOrder[ind].width < this.oldWidth) {
-        this.menuService.menuOrder[ind].isVisible = true;
+      if (oldIndex === ind) {
+        return;
+      }
+      oldIndex = ind;
+      const item = this.menuService.menuOrder[ind];
+      if (item.width < this.oldWidth) {
+        item.isVisible = true;
+        this.oldWidth -= item.width;
       }
     }
   }
@@ -135,10 +142,5 @@ export class TabComponent implements OnInit, DoCheck {
       $event.preventDefault();
       return;
     }
-
-    const item = this.menuService.menuOrder
-      .filter(e => e.name === $event.nextId)[0];
-    this.menuService.removeItemFromMenuOrder(item);
-    this.menuService.menuOrder.push(item);
   };
 }

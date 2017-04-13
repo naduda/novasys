@@ -1,21 +1,27 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { MenubuttonComponent } from './menubutton.component';
+import { HttpModule } from '@angular/http';
+import { MenuButtonComponent } from './menubutton.component';
+import { LangService } from '../../menu/lang/lang.service';
+import { MenuService } from '../../menu/menu.service';
 
 describe('MenubuttonComponent', () => {
-  let component: MenubuttonComponent;
-  let fixture: ComponentFixture<MenubuttonComponent>;
+  let component: MenuButtonComponent;
+  let fixture: ComponentFixture<MenuButtonComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MenubuttonComponent ]
+      declarations: [ MenuButtonComponent ],
+      imports: [HttpModule],
+      providers: [LangService, MenuService]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MenubuttonComponent);
+    fixture = TestBed.createComponent(MenuButtonComponent);
     component = fixture.componentInstance;
+    fixture.debugElement.injector.get(LangService);
+    fixture.debugElement.injector.get(MenuService);
     fixture.detectChanges();
   });
 
