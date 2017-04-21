@@ -7,12 +7,19 @@ import { ContentComponent } from './content.component';
 describe('ContentComponent', () => {
   let component: ContentComponent;
   let fixture: ComponentFixture<ContentComponent>;
+  let langService: LangService;
+  const langServiceStub = {
+    lang: {
+      testButton: 'Test Button'
+    }
+  };
+  const expectedTab = 'testButton';
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ContentComponent ],
       imports: [HttpModule],
-      providers: [LangService]
+      providers: [{provide: LangService, useValue: langServiceStub}]
     })
     .compileComponents();
   }));
@@ -20,23 +27,20 @@ describe('ContentComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ContentComponent);
     component = fixture.componentInstance;
-    let langService = fixture.debugElement.injector.get(LangService);
-    let spy = spyOn(langService, 'getMap').and
-      .returnValue(Promise.resolve({testButton: 'testButton'}));
+    component.tabName = expectedTab;
+    langService = fixture.debugElement.injector.get(LangService);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display "testButton"', () => {
-    let langService: LangService = fixture.debugElement.injector.get(LangService);
-    langService.getMap('uk').then(data => {
-      const tabName = 'testButton';
+  it('should display "testButton"', async(() => {
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
       const tabNmaEl  = fixture.debugElement.query(By.css('div'));
-      component.tabName = tabName;
-      fixture.detectChanges();
-      expect(tabNmaEl.nativeElement.textContent).toContain(tabName);
+      expect(tabNmaEl.nativeElement.textContent.trim())
+        .toEqual(langService.lang[expectedTab]);
     });
-  });
+  }));
 });

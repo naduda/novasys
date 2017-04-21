@@ -3,38 +3,37 @@ import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class MenuService {
-  public menu: any[];
-  public menuOrder: any[];
+  public tabs: any[];
+  public openedTabs: any[];
   public tabComponent: any;
 
   constructor() {
-    this.menu = [];
-    this.menuOrder = [];
+    this.tabs = [];
+    this.openedTabs = [];
     const barsButton = {
       ico: 'fa fa-caret-down',
       name: 'barsButton'
     };
-    this.menu.push(barsButton);
-    this.menuOrder.push(barsButton);
+    this.tabs.push(barsButton);
+    this.openedTabs.push(barsButton);
   }
 
-  lastOrderedItem = () => this.menuOrder[this.menuOrder.length - 1];
+  lastOpenedItem = () => this.openedTabs[this.openedTabs.length - 1];
 
-  removeItemFromMenuOrder(item: any) {
-    this.menuOrder.forEach((e, ind) => {
+  removeItemFromOpenedTabs(item: any) {
+    this.openedTabs.forEach((e, ind) => {
       if (e.name === item.name) {
-        this.menuOrder.splice(ind, 1);
+        this.openedTabs.splice(ind, 1);
         return;
       }
     });
 
     const tabSet: NgbTabset = this.tabComponent.ngbTabset;
-    const lastItem = this.menuOrder[this.menuOrder.length - 1];
-    tabSet.select(lastItem.name);
+    tabSet.select(this.lastOpenedItem());
   }
 
-  barsButton(item: any) {
-    const isOpen = this.menuOrder.find(e => e.name === item.name);
+  openTab(item: any) {
+    const isOpen = this.openedTabs.find(e => e.name === item.name);
     if (isOpen) {
       return;
     }
@@ -42,6 +41,6 @@ export class MenuService {
     const tabSet = this.tabComponent.ngbTabset;
     tabSet.activeId = item.name;
     item.isVisible = true;
-    this.menuOrder.push(item);
+    this.openedTabs.push(item);
   }
 }

@@ -16,7 +16,8 @@ module.exports = function (config) {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     files: [
-      { pattern: './src/test.ts', watched: false }
+      { pattern: './src/test.ts', watched: false },
+      './node_modules/bootstrap/dist/css/bootstrap.min.css'
     ],
     preprocessors: {
       './src/test.ts': ['@angular/cli']
@@ -36,7 +37,7 @@ module.exports = function (config) {
               : ['progress', 'kjhtml'],
     port: 9876,
     colors: true,
-    logLevel: config.LOG_INFO,
+    logLevel: config.LOG_WARN,//config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
     singleRun: false

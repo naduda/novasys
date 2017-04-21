@@ -1,28 +1,54 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LangService } from './lang.service';
 import { LangComponent } from './lang.component';
 
 describe('LangComponent', () => {
+  let langService: LangService;
   let component: LangComponent;
   let fixture: ComponentFixture<LangComponent>;
+  const langServiceStub: any = {
+    locales: [
+      {name: 'uk', text: 'Українська', ico: './assets/images/ukFlag.png'},
+      {name: 'ru', text: 'Русский', ico: './assets/images/ruFlag.png'},
+      {name: 'en', text: 'English', ico: './assets/images/enFlag.png'}
+    ],
+    getLocales: () => Promise.resolve(langServiceStub.locales),
+    getMap: (locale: string) => Promise.resolve(new Object())
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ LangComponent ],
-      providers: [LangService],
-      imports: [HttpModule]
+      providers: [{provide: LangService, useValue: langServiceStub}],
+      imports: [HttpModule, NgbModule.forRoot()]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LangComponent);
+    langService = fixture.debugElement.injector.get(LangService);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create component with 3 locales', async(() => {
     expect(component).toBeTruthy();
-  });
+    const buttons = fixture.debugElement
+         .queryAll(By.css('button'));
+    const names = ['English', 'Українська', 'Русский'];
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(buttons.length).toBe(3);
+      for (const b of buttons) {
+        const text = b.nativeElement.textContent.trim();
+        const index = names.indexOf(text);
+        expect(index).toBeGreaterThanOrEqual(0);
+      }
+    });
+  }));
 });

@@ -1,26 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Http } from '@angular/http';
 import { environment } from '../../../environments/environment';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class LangService {
-  private headers = new Headers({'Content-Type': 'application/json'});
-  private destUrl = './assets/langMock/';
+  private langLocalesUrl: string = environment.langLocales;
+  private langUrl: string = environment.langUrl;
 
-  private locales: any[];
-  public values: any;
+  private _locales: any[];
+  private values: any;
 
   constructor(private http: Http) {}
 
+  public get locales() {
+    return this._locales;
+  }
+
+  public get lang() {
+    return this.values;
+  }
+
   getLocales(): Promise<any[]> {
-    if (this.locales) {
-      return Promise.resolve(this.locales);
+    if (this._locales) {
+      return Promise.resolve(this._locales);
     } else {
-      return this.http.get(this.destUrl + 'locales.json').toPromise()
+      return this.http.get(this.langLocalesUrl).toPromise()
       .then(response => {
-        this.locales = response.json() as any[];
-        return this.locales;
+        this._locales = response.json() as any[];
+        return this._locales;
       })
       .catch(this.handleError);
     }
@@ -30,7 +38,7 @@ export class LangService {
     if (locale === undefined) {
       return Promise.resolve(null);
     } else {
-      return this.http.get(this.destUrl + locale + '_lang.json')
+      return this.http.get(this.langUrl + locale + '_lang.json')
       .toPromise()
       .then(response => {
         this.values = response.json();

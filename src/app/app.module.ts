@@ -10,7 +10,7 @@ import { MenuService } from './menu/menu.service';
 
 import { AppComponent } from './app.component';
 import { LangComponent } from './menu/lang/lang.component';
-import { MenuButtonComponent } from './menu/menubutton/menubutton.component';
+import { MenuButtonComponent } from './menu/buttons/menubutton.component';
 import { MenuComponent } from './menu/menu.component';
 import { TabComponent } from './content/tab/tab.component';
 import { ContentComponent } from './content/content.component';

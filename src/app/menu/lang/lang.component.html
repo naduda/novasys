@@ -4,7 +4,7 @@
     <span>{{locale.text}}</span>
   </span>
   <div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <button *ngFor="let l of locales"
+    <button *ngFor="let l of langService.locales"
       class="dropdown-item" (click)="changeLang(l)">
       <img src="{{l.ico}}" style="height: auto; width: 1rem;">
       <span>{{l.text}}</span>

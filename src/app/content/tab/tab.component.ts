@@ -42,7 +42,7 @@ export class TabComponent implements OnInit, DoCheck {
     let liWidth = Array.prototype.reduce
       .call(lis, (w, e) => w + e.offsetWidth, 0);
     Array.prototype.forEach.call(lis, e => {
-      const mItem = this.menuService.menuOrder
+      const mItem = this.menuService.openedTabs
         .filter(it => it.name === e.id);
       if (mItem.length > 0) {
         mItem[0].width = e.offsetWidth;
@@ -66,15 +66,15 @@ export class TabComponent implements OnInit, DoCheck {
   private addItemIfPossible() {
     let oldIndex = -1;
     while (this.oldWidth > 0) {
-      let ind = this.menuService.menuOrder.length - 1;
-      while (ind > 0 && this.menuService.menuOrder[ind].isVisible) {
+      let ind = this.menuService.openedTabs.length - 1;
+      while (ind > 0 && this.menuService.openedTabs[ind].isVisible) {
         ind--;
       }
       if (oldIndex === ind) {
         return;
       }
       oldIndex = ind;
-      const item = this.menuService.menuOrder[ind];
+      const item = this.menuService.openedTabs[ind];
       if (item.width < this.oldWidth) {
         item.isVisible = true;
         this.oldWidth -= item.width;
@@ -85,7 +85,7 @@ export class TabComponent implements OnInit, DoCheck {
   ngDoCheck() {
     if (this.isTabFull()) {
       while (this.oldWidth < 0) {
-        const firstItem = this.menuService.menuOrder
+        const firstItem = this.menuService.openedTabs
           .find(e => e.name !== 'barsButton' && e.isVisible);
         if (!firstItem) {
           return;
@@ -97,19 +97,19 @@ export class TabComponent implements OnInit, DoCheck {
 
     this.addItemIfPossible();
 
-    const hideTabs = this.menuService.menuOrder
+    const hideTabs = this.menuService.openedTabs
         .filter(e => e.name !== 'barsButton' && !e.isVisible);
-    this.menuService.menuOrder[0].isVisible = hideTabs.length > 0;
+    this.menuService.openedTabs[0].isVisible = hideTabs.length > 0;
 
     if (this.ngbTabset && this.ngbTabset.activeId) {
       if (this.ngbTabset.activeId === 'barsButton') {
-        this.ngbTabset.activeId = this.menuService.lastOrderedItem().name;
+        this.ngbTabset.activeId = this.menuService.lastOpenedItem().name;
       }
     }
   }
 
   onTabClose(menuItem: any, e: MouseEvent) {
-    this.menuService.removeItemFromMenuOrder(menuItem);
+    this.menuService.removeItemFromOpenedTabs(menuItem);
     e.preventDefault();
   }
 
@@ -121,19 +121,19 @@ export class TabComponent implements OnInit, DoCheck {
         ul.removeChild(ul.firstChild);
       }
 
-      this.menuService.menuOrder
+      this.menuService.openedTabs
       .filter(e => !e.isVisible)
       .forEach(e => {
         const li = document.createElement('LI');
-        li.innerHTML = this.langService.values[e.name];
+        li.innerHTML = this.langService.lang[e.name];
         li.id = e.name;
         li.onmouseup = (args) => {
           const id = (args.target as any).id;
-          const item = this.menuService.menuOrder
+          const item = this.menuService.openedTabs
             .filter(it => it.name === id)[0];
-          this.menuService.removeItemFromMenuOrder(item);
+          this.menuService.removeItemFromOpenedTabs(item);
           btn.style.display = 'none';
-          this.menuService.barsButton(item);
+          this.menuService.openTab(item);
         };
         li.onmouseover = () => li.style.cursor = 'pointer';
         ul.appendChild(li);

@@ -7,8 +7,8 @@ describe('novasys App', () => {
     page = new NovasysPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should has Novasys title', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getTitle()).toEqual('Novasys');
   });
 });

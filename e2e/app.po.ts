@@ -5,7 +5,7 @@ export class NovasysPage {
     return browser.get('/');
   }
 
-  getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+  getTitle() {
+    return browser.getTitle();
   }
 }
