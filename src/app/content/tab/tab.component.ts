@@ -1,6 +1,6 @@
-import { Component, ViewChild, OnInit, DoCheck } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, OnInit, DoCheck } from '@angular/core';
 import { NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { LangService } from '../../menu/lang/lang.service';
+import { LangService } from '../../lang/lang.service';
 import { MenuService } from '../../menu/menu.service';
 
 @Component({
@@ -10,10 +10,10 @@ import { MenuService } from '../../menu/menu.service';
 })
 export class TabComponent implements OnInit, DoCheck {
   @ViewChild('tabset') ngbTabset: NgbTabset;
-  private oldWidth;
 
   constructor(private menuService: MenuService,
-              public langService: LangService) {
+              public langService: LangService,
+              private changeDetector: ChangeDetectorRef) {
     window.onclick = event => {
       const modal = document.getElementById('myModal');
       if (event.target === modal) {
@@ -21,6 +21,8 @@ export class TabComponent implements OnInit, DoCheck {
       }
     };
     window.onresize = () => {
+      this.menuService.openedTabs.forEach(t => t.isVisible = true);
+      this.ngDoCheck();
       const link: any = document.querySelector('a.nav-link.active');
       if (link) {
         link.click();
@@ -30,17 +32,30 @@ export class TabComponent implements OnInit, DoCheck {
 
   ngOnInit() {
     this.menuService.tabComponent = this;
+    this.langService.onLanguageChange(locale => {
+      this.menuService.openedTabs.forEach(t => t.isVisible = true);
+      this.changeDetector.detectChanges();
+    });
   }
 
-  private isTabFull(): boolean {
+  private getDelta(): number {
     const ul: any = document.querySelector('ngb-tabset > ul');
-    const lis = document.querySelectorAll('ngb-tabset > ul > li > a');
-    if (!lis || lis.length === 0) {
-      return false;
+    if (!ul) {
+      return undefined;
     }
     const ulWidth = ul.offsetWidth;
+    const lis = document.querySelectorAll('ngb-tabset > ul > li > a');
+    if (!lis || lis.length === 0) {
+      return undefined;
+    }
     let liWidth = Array.prototype.reduce
       .call(lis, (w, e) => w + e.offsetWidth, 0);
+    const bbWidth: any = document
+        .querySelector('ngb-tabset > ul > li > a[id="barsButton"]');
+    if (bbWidth) {
+      liWidth += bbWidth.offsetHeight - bbWidth.offsetWidth;
+    }
+
     Array.prototype.forEach.call(lis, e => {
       const mItem = this.menuService.openedTabs
         .filter(it => it.name === e.id);
@@ -48,64 +63,34 @@ export class TabComponent implements OnInit, DoCheck {
         mItem[0].width = e.offsetWidth;
       }
     });
-
-    const bbWidth: any = document
-        .querySelector('ngb-tabset > ul > li > a[id="barsButton"]');
-    if (bbWidth) {
-      liWidth += bbWidth.offsetHeight - bbWidth.offsetWidth;
-    }
-
-    if (this.oldWidth === ulWidth - liWidth) {
-      return false;
-    }
-    this.oldWidth = ulWidth - liWidth;
-
-    return ulWidth < liWidth;
+    return ulWidth - liWidth;
   }
 
-  private addItemIfPossible() {
-    let oldIndex = -1;
-    while (this.oldWidth > 0) {
-      let ind = this.menuService.openedTabs.length - 1;
-      while (ind > 0 && this.menuService.openedTabs[ind].isVisible) {
-        ind--;
-      }
-      if (oldIndex === ind) {
-        return;
-      }
-      oldIndex = ind;
-      const item = this.menuService.openedTabs[ind];
-      if (item.width < this.oldWidth) {
-        item.isVisible = true;
-        this.oldWidth -= item.width;
-      }
+  ngAfterViewChecked() {
+    const delta = this.getDelta();
+    if (!delta) {
+      return;
+    }
+    if (delta < 0) {
+      this.ngDoCheck();
+      this.changeDetector.detectChanges();
     }
   }
 
   ngDoCheck() {
-    if (this.isTabFull()) {
-      while (this.oldWidth < 0) {
-        const firstItem = this.menuService.openedTabs
-          .find(e => e.name !== 'barsButton' && e.isVisible);
-        if (!firstItem) {
-          return;
-        }
-        firstItem.isVisible = false;
-        this.oldWidth -= firstItem.width;
+    let delta = this.getDelta();
+    while (delta && delta < 0) {
+      const visTab = this.menuService.openedTabs
+            .find(t => t.isVisible && t.name !== 'barsButton');
+      if (visTab) {
+        visTab.isVisible = false;
+        delta += visTab.width;
       }
     }
-
-    this.addItemIfPossible();
 
     const hideTabs = this.menuService.openedTabs
-        .filter(e => e.name !== 'barsButton' && !e.isVisible);
+        .filter(t => !t.isVisible && t.name !== 'barsButton');
     this.menuService.openedTabs[0].isVisible = hideTabs.length > 0;
-
-    if (this.ngbTabset && this.ngbTabset.activeId) {
-      if (this.ngbTabset.activeId === 'barsButton') {
-        this.ngbTabset.activeId = this.menuService.lastOpenedItem().name;
-      }
-    }
   }
 
   onTabClose(menuItem: any, e: MouseEvent) {

@@ -31,6 +31,8 @@ export class LangComponent implements OnInit {
     novasys = novasys ? JSON.parse(novasys) : new Object();
     novasys.locale = this.locale;
     localStorage.setItem('novasys', JSON.stringify(novasys));
-    this.langService.getMap(this.locale.name);
+    this.langService.getMap(this.locale.name).then(lang => {
+      this.langService.languageChange(this.locale.name);
+    });
   }
 }

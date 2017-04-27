@@ -5,11 +5,11 @@ import { HttpModule } from '@angular/http';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { LangService } from './menu/lang/lang.service';
+import { LangService } from './lang/lang.service';
 import { MenuService } from './menu/menu.service';
 
 import { AppComponent } from './app.component';
-import { LangComponent } from './menu/lang/lang.component';
+import { LangComponent } from './lang/lang.component';
 import { MenuButtonComponent } from './menu/buttons/menubutton.component';
 import { MenuComponent } from './menu/menu.component';
 import { TabComponent } from './content/tab/tab.component';

@@ -159,3 +159,6 @@
 [0421/125208.771:ERROR:process_info.cc(625)] range at 0xfff8b000, size 0xf84 fully unreadable
 [0421/125208.771:ERROR:process_info.cc(625)] range at 0xfff88000, size 0xf84 fully unreadable
 [0421/125208.771:ERROR:process_info.cc(625)] range at 0xfff85000, size 0xf84 fully unreadable
+[0424/160706.548:ERROR:process_reader_win.cc(114)] NtOpenThread: {Отказ доступа} Процесс запросил доступ к объекту, однако права доступа не предоставлены.  (0xc0000022)
+[0424/160706.551:ERROR:exception_snapshot_win.cc(87)] thread ID 17364 not found in process
+[0424/160706.551:WARNING:crash_report_exception_handler.cc(60)] ProcessSnapshotWin::Initialize failed

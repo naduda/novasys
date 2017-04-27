@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
@@ -10,8 +10,11 @@ export class LangService {
 
   private _locales: any[];
   private values: any;
+  private onChangeCallbacks: any[];
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) {
+    this.onChangeCallbacks = [];
+  }
 
   public get locales() {
     return this._locales;
@@ -19,6 +22,25 @@ export class LangService {
 
   public get lang() {
     return this.values;
+  }
+
+  languageChange(locale) {
+    for (let cb of this.onChangeCallbacks) {
+      cb && cb(locale);
+    }
+  }
+
+  onLanguageChange(cb) {
+    this.onChangeCallbacks.push(cb);
+  }
+
+  removeOnLanguageChange(cb) {
+    for (let i = 0; i < this.onChangeCallbacks.length; i++) {
+      if (cb === this.onChangeCallbacks[i]) {
+        this.onChangeCallbacks.splice(i, 1);
+        break;
+      }
+    }
   }
 
   getLocales(): Promise<any[]> {

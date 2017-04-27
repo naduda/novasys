@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +10,7 @@ describe('LangComponent', () => {
   let langService: LangService;
   let component: LangComponent;
   let fixture: ComponentFixture<LangComponent>;
+  let de: DebugElement;
   const langServiceStub: any = {
     locales: [
       {name: 'uk', text: 'Українська', ico: './assets/images/ukFlag.png'},
@@ -32,22 +34,21 @@ describe('LangComponent', () => {
     fixture = TestBed.createComponent(LangComponent);
     langService = fixture.debugElement.injector.get(LangService);
     component = fixture.componentInstance;
+    de = fixture.debugElement;
     fixture.detectChanges();
   });
 
   it('should create component with 3 locales', async(() => {
     expect(component).toBeTruthy();
-    const buttons = fixture.debugElement
-         .queryAll(By.css('button'));
-    const names = ['English', 'Українська', 'Русский'];
+    const buttons = de.queryAll(By.css('button'));
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(buttons.length).toBe(3);
+      const names = langService.locales.map(e => e.text);
       for (const b of buttons) {
         const text = b.nativeElement.textContent.trim();
-        const index = names.indexOf(text);
-        expect(index).toBeGreaterThanOrEqual(0);
+        expect(names).toContain(text);
       }
     });
   }));

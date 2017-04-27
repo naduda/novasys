@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Http } from '@angular/http';
-import { LangService } from '../lang/lang.service';
+import { LangService } from '../../lang/lang.service';
 import { MenuService } from '../menu.service';
 
 @Component({

@@ -22,9 +22,9 @@ export class MenuService {
 
   removeItemFromOpenedTabs(item: any) {
     this.openedTabs.forEach((e, ind) => {
+      e.isVisible = true;
       if (e.name === item.name) {
         this.openedTabs.splice(ind, 1);
-        return;
       }
     });
 

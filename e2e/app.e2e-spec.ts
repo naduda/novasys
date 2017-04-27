@@ -5,10 +5,22 @@ describe('novasys App', () => {
 
   beforeEach(() => {
     page = new NovasysPage();
+    page.init();
   });
 
   it('should has Novasys title', () => {
-    page.navigateTo();
-    expect(page.getTitle()).toEqual('Novasys');
+    expect(page.title).toEqual('Novasys');
+  });
+
+  it('check menu', () => {
+    page.menu.test();
+  });
+
+  it('check tab', () => {
+    page.tab.test();
+  });
+
+  it('check translation', () => {
+    page.lang.test();
   });
 });
