@@ -1,6 +1,6 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, OnInit, DoCheck } from '@angular/core';
 import { NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { LangService } from '../../menu/lang/lang.service';
+import { LangService } from '../../lang/lang.service';
 import { MenuService } from '../../menu/menu.service';
 
 @Component({
@@ -8,108 +8,124 @@ import { MenuService } from '../../menu/menu.service';
   templateUrl: './tab.component.html',
   styleUrls: ['./tab.component.css']
 })
-export class TabComponent implements OnInit {
-  @ViewChild('ngbTabset') ngbTabset: NgbTabset;
+export class TabComponent implements OnInit, DoCheck {
+  @ViewChild('tabset') ngbTabset: NgbTabset;
 
   constructor(private menuService: MenuService,
-              private langService: LangService) {
+              public langService: LangService,
+              private changeDetector: ChangeDetectorRef) {
     window.onclick = event => {
-      var modal = document.getElementById('myModal');
-      if (event.target == modal) {
-          modal.style.display = "none";
+      const modal = document.getElementById('myModal');
+      if (event.target === modal) {
+          modal.style.display = 'none';
       }
-    }
+    };
     window.onresize = () => {
-      let link: any = document.querySelector('a.nav-link.active');
-      link && link.click();
-    }
+      this.menuService.openedTabs.forEach(t => t.isVisible = true);
+      this.ngDoCheck();
+      const link: any = document.querySelector('a.nav-link.active');
+      if (link) {
+        link.click();
+      }
+    };
   }
 
   ngOnInit() {
     this.menuService.tabComponent = this;
+    this.langService.onLanguageChange(locale => {
+      this.menuService.openedTabs.forEach(t => t.isVisible = true);
+      this.changeDetector.detectChanges();
+    });
   }
 
-  private oldWidth;
-  ngDoCheck() {
-    let ul:any = document.querySelector('ngb-tabset > ul');
-    let lis = document.querySelectorAll('ngb-tabset > ul > li > a');
-    if(!lis || lis.length == 0) return;
-    let ulWidth = ul.offsetWidth;
+  private getDelta(): number {
+    const ul: any = document.querySelector('ngb-tabset > ul');
+    if (!ul) {
+      return undefined;
+    }
+    const ulWidth = ul.offsetWidth;
+    const lis = document.querySelectorAll('ngb-tabset > ul > li > a');
+    if (!lis || lis.length === 0) {
+      return undefined;
+    }
     let liWidth = Array.prototype.reduce
       .call(lis, (w, e) => w + e.offsetWidth, 0);
-    Array.prototype.forEach.call(lis, e => {
-      let mItem = this.menuService.menuOrder
-        .filter(it => it.name === e.id);
-      if(mItem.length > 0) mItem[0].width = e.offsetWidth;
-    });
-
-    let bbWidth: any = document
+    const bbWidth: any = document
         .querySelector('ngb-tabset > ul > li > a[id="barsButton"]');
-    if(bbWidth)
+    if (bbWidth) {
       liWidth += bbWidth.offsetHeight - bbWidth.offsetWidth;
-
-    if(ulWidth < liWidth) {
-      let visItems = this.menuService.menuOrder
-        .filter(e => e.name !== 'barsButton')
-        .filter(e => e.isVisible);
-      if(visItems && visItems.length > 0) visItems[0].isVisible = false;
-      
     }
 
-    if(this.oldWidth == ulWidth - liWidth) return;
-    this.oldWidth = ulWidth - liWidth;
-    if(this.oldWidth > 0) {
-      let ind = this.menuService.menuOrder.length - 1;
-      while(ind > 0 && this.menuService.menuOrder[ind].isVisible) {
-        ind--;
+    Array.prototype.forEach.call(lis, e => {
+      const mItem = this.menuService.openedTabs
+        .filter(it => it.name === e.id);
+      if (mItem.length > 0) {
+        mItem[0].width = e.offsetWidth;
       }
-      if(ind == this.menuService.menuOrder.length) return;
-      if(this.menuService.menuOrder[ind].width < this.oldWidth)
-        this.menuService.menuOrder[ind].isVisible = true;
-    }
-    let hideTabs = this.menuService.menuOrder
-        .filter(e => e.name !== 'barsButton' && !e.isVisible);
-    this.menuService.menuOrder
-        .filter(it => it.name === 'barsButton')
-        [0].isVisible = hideTabs.length > 0;
+    });
+    return ulWidth - liWidth;
   }
 
-  onTabClose(menuItem:any, e:MouseEvent) {
-    this.menuService.removeItemFromMenuOrder(menuItem);
+  ngAfterViewChecked() {
+    const delta = this.getDelta();
+    if (!delta) {
+      return;
+    }
+    if (delta < 0) {
+      this.ngDoCheck();
+      this.changeDetector.detectChanges();
+    }
+  }
+
+  ngDoCheck() {
+    let delta = this.getDelta();
+    while (delta && delta < 0) {
+      const visTab = this.menuService.openedTabs
+            .find(t => t.isVisible && t.name !== 'barsButton');
+      if (visTab) {
+        visTab.isVisible = false;
+        delta += visTab.width;
+      }
+    }
+
+    const hideTabs = this.menuService.openedTabs
+        .filter(t => !t.isVisible && t.name !== 'barsButton');
+    this.menuService.openedTabs[0].isVisible = hideTabs.length > 0;
+  }
+
+  onTabClose(menuItem: any, e: MouseEvent) {
+    this.menuService.removeItemFromOpenedTabs(menuItem);
     e.preventDefault();
   }
 
   beforeChange($event: NgbTabChangeEvent) {
     if ($event.nextId === 'barsButton') {
-      let btn = document.getElementById('myModal');
-      let ul = btn.children[0].children[0];
-      while (ul.firstChild) ul.removeChild(ul.firstChild);
+      const btn = document.getElementById('myModal');
+      const ul = btn.children[0].children[0];
+      while (ul.firstChild) {
+        ul.removeChild(ul.firstChild);
+      }
 
-      this.menuService.menuOrder
+      this.menuService.openedTabs
       .filter(e => !e.isVisible)
       .forEach(e => {
-        let li = document.createElement("LI");
-        li.innerHTML = this.langService.values[e.name];
+        const li = document.createElement('LI');
+        li.innerHTML = this.langService.lang[e.name];
         li.id = e.name;
         li.onmouseup = (args) => {
-          let id = (args.target as any).id;
-          let item = this.menuService.menuOrder
+          const id = (args.target as any).id;
+          const item = this.menuService.openedTabs
             .filter(it => it.name === id)[0];
-          this.menuService.removeItemFromMenuOrder(item);
-          btn.style.display = "none";
-          this.menuService.barsButton(item);
+          this.menuService.removeItemFromOpenedTabs(item);
+          btn.style.display = 'none';
+          this.menuService.openTab(item);
         };
         li.onmouseover = () => li.style.cursor = 'pointer';
         ul.appendChild(li);
       });
-      btn.style.display = "block";
+      btn.style.display = 'block';
       $event.preventDefault();
       return;
     }
-
-    let item = this.menuService.menuOrder
-      .filter(e => e.name === $event.nextId)[0];
-    this.menuService.removeItemFromMenuOrder(item);
-    this.menuService.menuOrder.push(item);
   };
 }

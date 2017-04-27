@@ -1,18 +1,19 @@
-import {Component} from '@angular/core';
-import {LangService} from './menu/lang/lang.service';
-import {KeyValue} from './menu/lang/KeyValue';
+import { Component, OnInit } from '@angular/core';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
+  providers: [NgbDropdown],
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  private values:any;
-  private isCollapsed: boolean;
+export class AppComponent implements OnInit {
+  public isCollapsed: boolean;
 
-  constructor(private langService: LangService){
-    this.values = langService.values;
+  constructor() {
     this.isCollapsed = true;
+  }
+
+  ngOnInit() {
   }
 }

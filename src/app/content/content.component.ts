@@ -1,18 +1,13 @@
-import { Component, ElementRef, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { LangService } from '../lang/lang.service';
 
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.css']
 })
-export class ContentComponent implements OnInit {
-  @Input() tabName:any;
+export class ContentComponent {
+  @Input() tabName: string;
 
-  constructor(private elementRef: ElementRef) { }
-
-  ngOnInit() {
-    //console.log(this.tabName)
-    //this.settings = this.elementRef.nativeElement.getAttribute('settings'))
-  }
-
+  constructor(public langService: LangService) {}
 }

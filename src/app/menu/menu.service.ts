@@ -1,40 +1,46 @@
 import { Injectable } from '@angular/core';
+import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class MenuService {
-  public menu: any[];
-  public menuOrder: any[];
+  public tabs: any[];
+  public openedTabs: any[];
   public tabComponent: any;
 
   constructor() {
-    this.menu = [];
-    this.menuOrder = [];
-    let barsButton = {
+    this.tabs = [];
+    this.openedTabs = [];
+    const barsButton = {
       ico: 'fa fa-caret-down',
       name: 'barsButton'
     };
-    this.menu.push(barsButton);
-    this.menuOrder.push(barsButton);
+    this.tabs.push(barsButton);
+    this.openedTabs.push(barsButton);
   }
 
-  removeItemFromMenuOrder(item:any) {
-    this.menuOrder.forEach((e, ind) => {
-      if(e.name === item.name) {
-        this.menuOrder.splice(ind, 1);
-        return;
+  lastOpenedItem = () => this.openedTabs[this.openedTabs.length - 1];
+
+  removeItemFromOpenedTabs(item: any) {
+    this.openedTabs.forEach((e, ind) => {
+      e.isVisible = true;
+      if (e.name === item.name) {
+        this.openedTabs.splice(ind, 1);
       }
     });
+
+    const tabSet: NgbTabset = this.tabComponent.ngbTabset;
+    tabSet.select(this.lastOpenedItem());
   }
 
-  barsButton(item:any) {
-    let isOpen = this.menuOrder
-        .filter(e => e.name === item.name).length > 0;
-    if(isOpen) return;
+  openTab(item: any) {
+    const isOpen = this.openedTabs.find(e => e.name === item.name);
+    if (isOpen) {
+      return;
+    }
 
-    let tabSet = this.tabComponent.ngbTabset;
-    item && (tabSet.activeId = item.name);
-    item.width = 0;
+    const tabSet = this.tabComponent.ngbTabset;
+    tabSet.activeId = item.name;
     item.isVisible = true;
-    this.menuOrder.push(item);
+    this.openedTabs.push(item);
   }
 }

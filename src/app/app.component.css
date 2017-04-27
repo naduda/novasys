@@ -2,11 +2,17 @@ div.fixed-top {
   color: #DDD;
 }
 
+app-lang {
+  margin-right: -1rem;
+}
+
+span.hidden-lg-up {
+  padding-left: 0.5rem;
+}
+
 i.fa-bars {
   color: #CCC;
-  font-size: 1.5rem;
-  margin-right: 0.5rem;
-  margin-left: -0.5rem;
+  font-size: 1.25rem;
   position: relative;
   top: 0.15rem;
 }
@@ -27,6 +33,7 @@ i.fa-bars:hover {
 }
 
 .contentTab {
+  height: 100%;
   width: 100%;
 }
 

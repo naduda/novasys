@@ -22,3 +22,12 @@ ngb-tabset li.nav-item {
 ngb-tabset li.nav-item a {
   padding: 0.5rem;
 }
+
+.tab-content {
+  height: 100%;
+}
+
+.tab-pane {
+  height: calc(100% - 2.75rem);
+  max-height: calc(100% - 2.75rem);
+}
