@@ -9,7 +9,7 @@ import { LangService } from './lang.service';
 export class LangComponent implements OnInit {
   public locale: any;
 
-  constructor(private langService: LangService) {
+  constructor(public langService: LangService) {
     this.locale = new Object();
   }
 

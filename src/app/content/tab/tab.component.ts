@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ViewChild, OnInit, DoCheck } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, OnInit, DoCheck, AfterViewChecked } from '@angular/core';
 import { NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { LangService } from '../../lang/lang.service';
 import { MenuService } from '../../menu/menu.service';
@@ -8,7 +8,7 @@ import { MenuService } from '../../menu/menu.service';
   templateUrl: './tab.component.html',
   styleUrls: ['./tab.component.css']
 })
-export class TabComponent implements OnInit, DoCheck {
+export class TabComponent implements OnInit, DoCheck, AfterViewChecked {
   @ViewChild('tabset') ngbTabset: NgbTabset;
 
   constructor(private menuService: MenuService,
