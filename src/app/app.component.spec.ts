@@ -7,7 +7,7 @@ import { NgbModule, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppModule } from './app.module';
 
-import { LangService } from './menu/lang/lang.service';
+import { LangService } from './lang/lang.service';
 import { MenuService } from './menu/menu.service';
 
 import { AppComponent } from './app.component';

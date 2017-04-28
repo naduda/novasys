@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-import { LangService } from '../menu/lang/lang.service';
+import { LangService } from '../lang/lang.service';
 import { ContentComponent } from './content.component';
 
 describe('ContentComponent', () => {

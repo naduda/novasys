@@ -4,7 +4,7 @@ import { HttpModule } from '@angular/http';
 import { NgbModule, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { TabComponent } from './tab.component';
 import { ContentComponent } from '../content.component';
-import { LangService } from '../../menu/lang/lang.service';
+import { LangService } from '../../lang/lang.service';
 import { MenuService } from '../../menu/menu.service';
 
 describe('TabComponent', () => {
@@ -17,7 +17,8 @@ describe('TabComponent', () => {
     name: 'barsButton'
   };
   const langServiceStub: any = {
-    lang: {}
+    lang: {},
+    onLanguageChange: () => {}
   };
 
   for (let i = 0; i < 50; i++) {

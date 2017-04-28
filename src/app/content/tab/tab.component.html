@@ -3,18 +3,18 @@
     <ul></ul>
   </div>
 </div>
-<ngb-tabset #tabset *ngIf="langService.lang"
+<ngb-tabset #tabset="ngbTabset" *ngIf="langService.lang"
   (tabChange)="beforeChange($event)">
   <div *ngFor="let tab of menuService.openedTabs">
     <ngb-tab *ngIf="tab.isVisible" id="{{tab.name}}">
-      <template ngbTabTitle>
+      <ng-template ngbTabTitle>
         <i class="{{tab.ico}}"></i>
         <span *ngIf="tab.name !== 'barsButton'" class="tabTitle">{{langService.lang[tab.name]}}</span>
         <i *ngIf="tab.name !== 'barsButton'" class="fa fa-close text-danger" (click)="onTabClose(tab, $event);"></i>
-      </template>
-      <template ngbTabContent>
+      </ng-template>
+      <ng-template ngbTabContent>
         <app-content [tabName]="tab.name"></app-content>
-      </template>
+      </ng-template>
     </ngb-tab>
   </div>
 </ngb-tabset>

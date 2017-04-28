@@ -25,8 +25,10 @@ export class LangService {
   }
 
   languageChange(locale) {
-    for (let cb of this.onChangeCallbacks) {
-      cb && cb(locale);
+    for (const cb of this.onChangeCallbacks) {
+      if (cb) {
+        cb(locale);
+      }
     }
   }
 

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { MenuButtonComponent } from './menubutton.component';
-import { LangService } from '../../menu/lang/lang.service';
+import { LangService } from '../../lang/lang.service';
 import { MenuService } from '../../menu/menu.service';
 
 describe('MenubuttonComponent', () => {
