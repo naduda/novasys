@@ -1,0 +1,8 @@
+{
+  "name": "menuFile",
+  "children":[
+    {"name": "menuFileDisconnect", "ico": "fa fa-link"},
+    {"name": "separator"},
+    {"name": "menuFileExit", "ico": "fa fa-close"}
+  ]
+}
