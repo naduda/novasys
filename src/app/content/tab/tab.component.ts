@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef, ViewChild, OnInit, DoCheck, AfterViewChecked } from '@angular/core';
 import { NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { LangService } from '../../lang/lang.service';
+import { LangService } from 'prNgCommon/lang/lang.service';
 import { MenuService } from '../../menu/menu.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class TabComponent implements OnInit, DoCheck, AfterViewChecked {
   @ViewChild('tabset') ngbTabset: NgbTabset;
 
   constructor(private menuService: MenuService,
-              public langService: LangService,
+              public lang: LangService,
               private changeDetector: ChangeDetectorRef) {
     window.onclick = event => {
       const modal = document.getElementById('myModal');
@@ -32,7 +32,7 @@ export class TabComponent implements OnInit, DoCheck, AfterViewChecked {
 
   ngOnInit() {
     this.menuService.tabComponent = this;
-    this.langService.onLanguageChange(locale => {
+    this.lang.onLanguageChange(locale => {
       this.menuService.openedTabs.forEach(t => t.isVisible = true);
       this.changeDetector.detectChanges();
     });
@@ -110,7 +110,7 @@ export class TabComponent implements OnInit, DoCheck, AfterViewChecked {
       .filter(e => !e.isVisible)
       .forEach(e => {
         const li = document.createElement('LI');
-        li.innerHTML = this.langService.lang[e.name];
+        li.innerHTML = this.lang[e.name];
         li.id = e.name;
         li.onmouseup = (args) => {
           const id = (args.target as any).id;

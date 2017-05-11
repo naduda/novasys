@@ -1,8 +1,8 @@
-<div class="nav-link" ngbDropdown *ngIf="langService.lang">
+<div class="nav-link" ngbDropdown *ngIf="lang.ready">
   <div class="icoDiv hidden-md-down" *ngIf="settings.ico">
     <i class="{{settings.ico}}"></i>
   </div>
-  <span ngbDropdownToggle>{{langService.lang[settings.name]}}</span>
+  <span ngbDropdownToggle>{{lang[settings.name]}}</span>
   <div class="dropdown-menu">
     <div *ngFor="let s of settings.children"
     [ngClass]="{'dropdown-item':s.name !== 'separator', 'dropdown-divider':s.name === 'separator'}"
@@ -10,7 +10,7 @@
       <div class="icoDiv">
         <i class="{{s.ico}}"></i>
       </div>
-      <span>{{langService.lang[s.name]}}</span>
+      <span>{{lang[s.name]}}</span>
     </div>
   </div>
 </div>

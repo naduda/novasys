@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpModule } from '@angular/http';
 import { MenuComponent } from './menu.component';
 import { MenuButtonComponent } from '../menu/buttons/menubutton.component';
-import { LangService } from '../lang/lang.service';
+import { LangService } from 'prNgCommon/lang/lang.service';
 import { MenuService } from '../menu/menu.service';
 
 describe('MenuComponent', () => {

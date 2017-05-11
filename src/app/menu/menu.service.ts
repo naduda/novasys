@@ -29,7 +29,9 @@ export class MenuService {
     });
 
     const tabSet: NgbTabset = this.tabComponent.ngbTabset;
-    tabSet.select(this.lastOpenedItem());
+    const lastOpenTab = this.lastOpenedItem();
+    tabSet.select(lastOpenTab);
+    tabSet.activeId = lastOpenTab.name;
   }
 
   openTab(item: any) {

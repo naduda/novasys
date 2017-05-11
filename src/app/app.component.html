@@ -11,7 +11,10 @@
       </div>
     </div>
     <div class="col-lg-3 push-lg-8 col-sm-9 col-8 text-right">
-      <app-lang></app-lang>
+      <app-lang [storageName]="'novasys'"
+                [apiLocales]="'./assets/langMock/locales.json'"
+                [apiLang]="'./assets/langMock/%s_lang.json'">
+      </app-lang>
     </div>
     <div class="col-lg-8 pull-lg-3 col-12" 
       [ngClass]="{'hidden-md-down':isCollapsed}">

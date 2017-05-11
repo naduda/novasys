@@ -4,31 +4,32 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { LangService } from './lang/lang.service';
+import { CommonModule } from 'prNgCommon/common.module';
+import { LangService } from 'prNgCommon/lang/lang.service';
 import { MenuService } from './menu/menu.service';
 
 import { AppComponent } from './app.component';
-import { LangComponent } from './lang/lang.component';
 import { MenuButtonComponent } from './menu/buttons/menubutton.component';
 import { MenuComponent } from './menu/menu.component';
 import { TabComponent } from './content/tab/tab.component';
 import { ContentComponent } from './content/content.component';
+import { ToolbarDirective } from './content/toolbar.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LangComponent,
     MenuButtonComponent,
     MenuComponent,
     TabComponent,
-    ContentComponent
+    ContentComponent,
+    ToolbarDirective
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    CommonModule
   ],
   providers: [LangService, MenuService],
   bootstrap: [AppComponent]

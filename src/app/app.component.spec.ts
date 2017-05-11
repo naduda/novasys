@@ -6,8 +6,8 @@ import { HttpModule } from '@angular/http';
 import { NgbModule, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppModule } from './app.module';
-
-import { LangService } from './lang/lang.service';
+import { CommonModule } from 'prNgCommon/common.module';
+import { LangService } from 'prNgCommon/lang/lang.service';
 import { MenuService } from './menu/menu.service';
 
 import { AppComponent } from './app.component';
@@ -23,7 +23,8 @@ describe('AppComponent', () => {
         FormsModule,
         HttpModule,
         AppModule,
-        NgbModule.forRoot()
+        NgbModule.forRoot(),
+        CommonModule
       ]
     }).compileComponents();
   }));

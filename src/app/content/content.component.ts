@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { LangService } from '../lang/lang.service';
+import { LangService } from 'prNgCommon/lang/lang.service';
 
 @Component({
   selector: 'app-content',
@@ -9,5 +9,5 @@ import { LangService } from '../lang/lang.service';
 export class ContentComponent {
   @Input() tabName: string;
 
-  constructor(public langService: LangService) {}
+  constructor(public lang: LangService) {}
 }
