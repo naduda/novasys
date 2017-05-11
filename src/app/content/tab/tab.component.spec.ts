@@ -4,7 +4,7 @@ import { HttpModule } from '@angular/http';
 import { NgbModule, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { TabComponent } from './tab.component';
 import { ContentComponent } from '../content.component';
-import { LangService } from '../../lang/lang.service';
+import { LangService } from 'prNgCommon/lang/lang.service';
 import { MenuService } from '../../menu/menu.service';
 
 describe('TabComponent', () => {
@@ -17,12 +17,12 @@ describe('TabComponent', () => {
     name: 'barsButton'
   };
   const langServiceStub: any = {
-    lang: {},
+    ready: true,
     onLanguageChange: () => {}
   };
 
   for (let i = 0; i < 50; i++) {
-    langServiceStub.lang['key_' + i] = 'value_' + i;
+    langServiceStub['key_' + i] = 'value_' + i;
   }
 
   beforeEach(async(() => {
@@ -39,12 +39,12 @@ describe('TabComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TabComponent);
+    component = fixture.componentInstance;
     langService = fixture.debugElement.injector.get(LangService);
     menuService = fixture.debugElement.injector.get(MenuService);
-    component = fixture.componentInstance;
 
-    for (const key in langService.lang) {
-      if (langService.lang.hasOwnProperty(key)) {
+    for (const key in langService) {
+      if (langService.hasOwnProperty(key) && key.startsWith('key_')) {
         menuService.tabs.push({
           ico: 'fa fa-bars',
           name: key
@@ -92,7 +92,7 @@ describe('TabComponent', () => {
       const liText = fixture.debugElement
         .query(By.css('ngb-tabset a.nav-link.active > span'))
         .nativeElement;
-      expect(liText.innerHTML).toEqual(langService.lang[t.name]);
+      expect(liText.innerHTML).toEqual(langService[t.name]);
     }
   });
 });

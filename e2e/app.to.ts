@@ -18,6 +18,11 @@ export class Tab {
     return this._tabs;
   }
 
+  closeActiveTab() {
+    const selector = 'ngb-tabset a.nav-link.active > i:last-child';
+    element(by.css(selector)).click();
+  }
+
   test() {
     expect(this._instance.isDisplayed()).toBeTruthy();
     for (let i = 0; i < 5; i++) {
@@ -37,6 +42,7 @@ export class Tab {
     expect(this._tabs.count()).toBe(0);
 
     this.checkTabsCount(pageWidth, this._tabs.count());
+    this.checkCloseTabBug();
   }
 
   private checkTabsCount(pageWidth: number, expectTabs) {
@@ -71,5 +77,18 @@ export class Tab {
       case 1200:
         return locale === 'en' ? 7 : 7;
     }
+  }
+
+  private checkCloseTabBug() {
+    this._tabs.count().then(count => {
+      if (count > 1) {
+        const activ = this._instance
+          .element(by.css('a.nav-link.active'));
+        this._tabs.get(count - 2).click();
+        this.closeActiveTab();
+        expect(activ.getAttribute('id'))
+          .not.toEqual('barsButton');
+      }
+    });
   }
 }

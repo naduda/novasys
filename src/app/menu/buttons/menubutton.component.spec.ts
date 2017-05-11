@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { MenuButtonComponent } from './menubutton.component';
-import { LangService } from '../../lang/lang.service';
+import { LangService } from 'prNgCommon/lang/lang.service';
 import { MenuService } from '../../menu/menu.service';
 
 describe('MenubuttonComponent', () => {
@@ -10,12 +10,11 @@ describe('MenubuttonComponent', () => {
   let fixture: ComponentFixture<MenuButtonComponent>;
   let langService;
   const langServiceStub: any = {
-    lang: {
-      menuItem: 'menuItem_translated',
-      child_1: 'child_1_translated',
-      child_2: 'child_2_translated',
-      child_3: 'child_3_translated'
-    }
+    ready: true,
+    menuItem: 'menuItem_translated',
+    child_1: 'child_1_translated',
+    child_2: 'child_2_translated',
+    child_3: 'child_3_translated'
   };
   const settings = {
     name: 'menuItem',
@@ -56,7 +55,7 @@ describe('MenubuttonComponent', () => {
     const menuItemText = fixture.debugElement
       .query(By.css('span[ngbDropdownToggle]'));
     expect(menuItemText.nativeElement.textContent)
-      .toEqual(langService.lang[settings.name]);
+      .toEqual(langService[settings.name]);
 
     const children = fixture.debugElement
       .queryAll(By.css('div[class="dropdown-menu"] > div'));
@@ -69,7 +68,7 @@ describe('MenubuttonComponent', () => {
       }
       const span = children[i].nativeElement
         .getElementsByTagName('span')[0];
-      const text = langService.lang[settings.children[i].name];
+      const text = langService[settings.children[i].name];
       expect(span.textContent).toEqual(text);
     }
   });

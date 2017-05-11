@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Http } from '@angular/http';
-import { LangService } from '../../lang/lang.service';
+import { LangService } from 'prNgCommon/lang/lang.service';
 import { MenuService } from '../menu.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class MenuButtonComponent implements OnInit {
   public settings: any;
 
   constructor(private http: Http,
-              public langService: LangService,
+              public lang: LangService,
               private menuService: MenuService) {}
 
   ngOnInit() {

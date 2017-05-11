@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
-import { LangService } from '../lang/lang.service';
+import { LangService } from 'prNgCommon/lang/lang.service';
 import { ContentComponent } from './content.component';
 
 describe('ContentComponent', () => {
@@ -9,9 +9,7 @@ describe('ContentComponent', () => {
   let fixture: ComponentFixture<ContentComponent>;
   let langService: LangService;
   const langServiceStub = {
-    lang: {
       testButton: 'Test Button'
-    }
   };
   const expectedTab = 'testButton';
 
@@ -38,9 +36,9 @@ describe('ContentComponent', () => {
   it('should display "testButton"', async(() => {
     fixture.detectChanges();
     fixture.whenStable().then(() => {
-      const tabNmaEl  = fixture.debugElement.query(By.css('div'));
-      expect(tabNmaEl.nativeElement.textContent.trim())
-        .toEqual(langService.lang[expectedTab]);
+      const tabNameEl  = fixture.debugElement.query(By.css('div.tabcontent'));
+      expect(tabNameEl.nativeElement.textContent.trim())
+        .toEqual(langService[expectedTab]);
     });
   }));
 });
