@@ -10,7 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "preuCommon": "rmdir /s/q node_modules\\prNgCommon",
-    "uCommon": "npm i prNgCommon"
+    "uCommon": "npm i prNgCommon",
+    "buildIO": "ng build --base-href /novasys/"
   },
   "private": true,
   "dependencies": {
